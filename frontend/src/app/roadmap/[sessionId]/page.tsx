@@ -245,15 +245,26 @@ export default function RoadmapPage() {
 
                         <div className="space-y-4">
                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Learning Materials</p>
-                           <div className="flex gap-3">
-                              <div className="flex-1 p-4 bg-white border border-slate-200 rounded-2xl flex flex-col items-center hover:border-primary-200 transition-colors cursor-pointer group/icon">
-                                <span className="material-symbols-outlined text-slate-400 mb-1 group-hover/icon:text-primary-600 transition-colors">video_library</span>
-                                <span className="text-[10px] font-bold text-slate-500 uppercase">Videos</span>
-                              </div>
-                              <div className="flex-1 p-4 bg-white border border-slate-200 rounded-2xl flex flex-col items-center hover:border-primary-200 transition-colors cursor-pointer group/icon">
-                                <span className="material-symbols-outlined text-slate-400 mb-1 group-hover/icon:text-primary-600 transition-colors">description</span>
-                                <span className="text-[10px] font-bold text-slate-500 uppercase">Docs</span>
-                              </div>
+                           <div className="space-y-2">
+                              {topic.recommended_resources?.map((res: any, i: number) => (
+                                <a 
+                                  key={i} 
+                                  href={res.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between group/res hover:border-primary-600 transition-all cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center group-hover/res:bg-primary-50 transition-colors">
+                                      <span className="material-symbols-outlined text-slate-400 text-[18px] group-hover/res:text-primary-600">
+                                        {res.type === 'Video' ? 'play_circle' : 'description'}
+                                      </span>
+                                    </div>
+                                    <span className="text-xs font-bold text-slate-700 group-hover/res:text-primary-600 transition-colors">{res.name}</span>
+                                  </div>
+                                  <span className="material-symbols-outlined text-slate-300 text-[16px] group-hover/res:text-primary-600">open_in_new</span>
+                                </a>
+                              ))}
                            </div>
                         </div>
                       </div>
