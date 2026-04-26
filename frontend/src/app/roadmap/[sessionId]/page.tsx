@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Calendar, CheckCircle, ExternalLink, ArrowLeft, Download, Bookmark, Loader2 } from 'lucide-react';
 import api from '@/lib/api';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { useAuth } from '@/context/AuthContext';
 import Portal from '@/components/Portal';
