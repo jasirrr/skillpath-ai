@@ -24,7 +24,7 @@ export const submitAnswer = async (answerData: any) => {
 };
 
 export const generateRoadmap = async (sessionId: string, targetRole: string) => {
-  const response = await api.get(`/generate-roadmap/${sessionId}?target_role=${target_role}`);
+  const response = await api.get(`/generate-roadmap/${sessionId}?target_role=${targetRole}`);
   return response.data;
 };
 
