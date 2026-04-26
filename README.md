@@ -23,19 +23,19 @@ An intelligent MVP that analyzes resume-job description gaps and conducts conver
 ```
 /backend
   /app
-    /api          # FastAPI endpoints
-    /core         # Config & Prompt Templates
-    /db           # MongoDB connection
-    /models       # Pydantic schemas
+    /api          # FastAPI endpoints (Upload, Assessment, Roadmap)
+    /core         # Config, Auth & Prompt Templates
+    /db           # MongoDB connection & init
+    /models       # Pydantic schemas (User, Session, Roadmap)
     /services/ai  # AI Engines (LLM, Scoring, Reasoning)
-  main.py         # Entry point
+  main.py         # Entry point (CORS & Router init)
 /frontend
   /src
-    /api          # Axios client
-    /components   # Reusable UI
-    /pages        # App views
-    /styles       # Tailwind config
-  tailwind.config.js
+    /app          # Next.js App Router (Dashboard, Roadmap, Assessment)
+    /components   # High-fidelity UI components
+    /context      # Auth State Management
+    /lib          # API Client (Axios)
+  tailwind.config.ts
 ```
 
 ## ⚙️ Local Setup Instructions
