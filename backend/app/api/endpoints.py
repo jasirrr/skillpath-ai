@@ -37,8 +37,7 @@ async def register(email: str = Form(...), password: str = Form(...), name: str 
     )
     await db.users.insert_one(user.dict())
     
-    token = create_access_token({"sub": user.id})
-    return {"access_token": token, "token_type": "bearer", "user": {"email": user.email, "name": user.full_name}}
+    return {"access_token": token, "token_type": "bearer", "user": {"id": user.id, "email": user.email, "name": user.full_name}}
 
 @router.post("/auth/login")
 async def login(email: str = Form(...), password: str = Form(...)):
@@ -48,7 +47,7 @@ async def login(email: str = Form(...), password: str = Form(...)):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     token = create_access_token({"sub": user["id"]})
-    return {"access_token": token, "token_type": "bearer", "user": {"email": user["email"], "name": user["full_name"]}}
+    return {"access_token": token, "token_type": "bearer", "user": {"id": user["id"], "email": user["email"], "name": user["full_name"]}}
 
 @router.post("/upload", response_model=UserSession)
 async def upload_resume_and_jd(
@@ -68,6 +67,10 @@ async def upload_resume_and_jd(
         text = resume_text
     else:
         raise HTTPException(status_code=400, detail="No resume provided")
+
+    # Sanitize user_id
+    if user_id in [None, "null", "undefined", ""]:
+        user_id = None
 
     # Extract skills
     candidate_skills = await extract_skills(text)
@@ -356,6 +359,8 @@ async def chat_with_agent(session_id: str, message: str = Form(...)):
 
 @router.get("/user/sessions/{user_id}")
 async def get_user_sessions(user_id: str):
+    if user_id in [None, "null", "undefined", ""]:
+        return []
     db = get_database()
     sessions = await db.sessions.find({"user_id": user_id}).sort("created_at", -1).to_list(100)
     for s in sessions:
