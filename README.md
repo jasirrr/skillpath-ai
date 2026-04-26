@@ -1,4 +1,4 @@
-# AI Skill Assessment & Personalized Learning Planner
+# SkillPath AI 🚀
 
 An intelligent MVP that analyzes resume-job description gaps and conducts conversational AI assessments to generate personalized learning roadmaps.
 

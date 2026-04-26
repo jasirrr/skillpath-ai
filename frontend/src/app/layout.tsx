@@ -7,8 +7,8 @@ import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Skill Planner",
-  description: "Personalized learning roadmap powered by AI",
+  title: "SkillPath AI | Agentic Career Growth Platform",
+  description: "Accelerate your career with AI-driven skill gap analysis and personalized learning roadmaps.",
 };
 
 import { AuthProvider } from "@/context/AuthContext";
@@ -29,7 +29,7 @@ export default function RootLayout({
           </main>
           
           <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-100">
-            &copy; 2024 AI Skill Assessment & Personalized Learning Planner. Built with ❤️ for future-proof careers.
+            &copy; 2024 SkillPath AI. Built with ❤️ for future-proof careers.
           </footer>
         </AuthProvider>
       </body>
