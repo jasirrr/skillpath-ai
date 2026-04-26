@@ -84,7 +84,6 @@ async def upload_resume_and_jd(
     try:
         gaps = SkillGap(**gaps_data)
     except Exception as e:
-        print(f"Pydantic Validation Error: {e}")
         # Fallback to empty gaps if validation fails
         gaps = SkillGap(strong_matches=[], partial_matches=[], missing_skills=[], adjacent_recommendations=[])
     

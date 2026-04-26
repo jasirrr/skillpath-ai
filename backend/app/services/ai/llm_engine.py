@@ -35,21 +35,19 @@ async def call_llm(prompt: str, response_format={"type": "json_object"}) -> dict
             max_tokens=4000,
             extra_headers={
                 "HTTP-Referer": "https://localhost:3000",
-                "X-Title": "AI Skill Planner"
+                "X-Title": "SkillPath AI"
             }
         )
         content = clean_json_content(response.choices[0].message.content)
         try:
             return json.loads(content)
         except json.JSONDecodeError as e:
-            print(f"JSON Parse Error: {e}\nContent: {content}")
             # Try to extract anything that looks like a JSON object
             match = re.search(r'\{.*\}', content, re.DOTALL)
             if match:
                 return json.loads(match.group())
             raise e
     except Exception as e:
-        print(f"Error calling LLM: {e}")
         return {}
 
 async def call_llm_list(prompt: str) -> list:
@@ -63,7 +61,7 @@ async def call_llm_list(prompt: str) -> list:
             max_tokens=800,
             extra_headers={
                 "HTTP-Referer": "https://localhost:3000",
-                "X-Title": "AI Skill Planner"
+                "X-Title": "SkillPath AI"
             }
         )
         content = clean_json_content(response.choices[0].message.content)
@@ -77,5 +75,4 @@ async def call_llm_list(prompt: str) -> list:
             return re.findall(r'"([^"]*)"', content)
             
     except Exception as e:
-        print(f"Error calling LLM List: {e}")
         return []

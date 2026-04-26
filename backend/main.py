@@ -29,7 +29,7 @@ app.include_router(api_router, prefix="/api")
 
 @app.get("/")
 async def root():
-    return {"message": "AI Skill Planner API is running"}
+    return {"message": "SkillPath AI API is running"}
 
 if __name__ == "__main__":
     import uvicorn
