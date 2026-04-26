@@ -7,26 +7,44 @@ Text:
 """
 
 JD_PARSING_PROMPT = """
-Extract the core technical and soft skills required for the following Job Description.
-Return ONLY a JSON list of strings.
+Extract a list of technical and soft skills explicitly mentioned in the following Job Description.
+
+**STRICT RULES:**
+1. ONLY extract skills that are EXPLICITLY WRITTEN in the text.
+2. DO NOT infer or add common skills (like "Communication" or "Teamwork") if they are not explicitly mentioned.
+3. If the JD is very short (e.g., just "Python"), return ONLY those specific words.
 
 Job Description:
 {jd_text}
+
+Return a JSON list of strings: ["Skill 1", "Skill 2"]
 """
 
 GAP_ANALYSIS_PROMPT = """
-You are a Strategic Career Architect. Compare the candidate's resume claims with the Job Description.
-Identify:
-1. strong_matches: Skills confirmed by experience.
-2. partial_matches: Skills mentioned but needing validation.
-3. missing_skills: Hard requirements missing from the resume.
-4. adjacent_recommendations: Strategic 'Easy Wins'. Identify skills that are logically close to the candidate's current stack (Knowledge Proximity) and highly valued by the JD. (e.g., If they know React, suggest Next.js or Tailwind).
+You are a meticulous Skill Gap Analyst. Compare the Candidate's Extracted Skills against the Job Requirements.
 
-Provide a brief 'reasoning' for each adjacent recommendation.
-Return ONLY a structured JSON object with these keys.
+**CRITICAL RULE: DO NOT FLAG A SKILL AS MISSING IF IT IS MENTIONED ANYWHERE IN THE CANDIDATE'S TEXT.**
+Check for synonyms, different capitalizations, and implicit context (e.g., if they know React, they know JavaScript).
+
+Analyze carefully:
+1. **Strong Matches**: Skills explicitly mentioned in both or clearly mastered.
+2. **Partial Matches**: Skills mentioned but maybe not at the required depth or version.
+3. **Missing Skills**: ONLY skills that are absolutely not found or implied in the candidate's profile.
+4. **Adjacent Recommendations**: Skills NOT in the JD but would make the candidate stand out based on their current profile.
 
 Candidate Skills: {candidate_skills}
 Job Requirements: {job_skills}
+Full Resume Text (for verification): {raw_resume_text}
+
+Return ONLY a JSON object:
+{{
+  "strong_matches": [],
+  "partial_matches": [],
+  "missing_skills": [],
+  "adjacent_recommendations": [
+    {{"skill": "Name", "reason": "Why it helps"}}
+  ]
+}}
 """
 
 QUESTION_GENERATION_PROMPT = """

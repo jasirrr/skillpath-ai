@@ -77,7 +77,7 @@ async def upload_resume_and_jd(
         raise HTTPException(status_code=500, detail="Failed to extract skills from inputs. Please check your API key.")
     
     # Analyze gaps
-    gaps_data = await analyze_skill_gaps(candidate_skills, job_skills)
+    gaps_data = await analyze_skill_gaps(candidate_skills, job_skills, raw_resume_text=text)
     if not gaps_data:
         raise HTTPException(status_code=500, detail="AI analysis failed. Please try again.")
         

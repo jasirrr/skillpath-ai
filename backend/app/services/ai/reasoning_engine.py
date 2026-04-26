@@ -15,10 +15,11 @@ async def parse_jd(jd_text: str) -> list:
     prompt = JD_PARSING_PROMPT.format(jd_text=jd_text)
     return await call_llm_list(prompt)
 
-async def analyze_skill_gaps(candidate_skills: list, job_skills: list) -> dict:
+async def analyze_skill_gaps(candidate_skills: list, job_skills: list, raw_resume_text: str = "") -> dict:
     prompt = GAP_ANALYSIS_PROMPT.format(
         candidate_skills=", ".join(candidate_skills),
-        job_skills=", ".join(job_skills)
+        job_skills=", ".join(job_skills),
+        raw_resume_text=raw_resume_text
     )
     return await call_llm(prompt)
 
