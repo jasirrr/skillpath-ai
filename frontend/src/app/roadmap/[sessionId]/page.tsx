@@ -69,10 +69,71 @@ export default function RoadmapPage() {
     return totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
   };
 
+  const [reasoningStep, setReasoningStep] = useState(0);
+  const reasoningSteps = [
+    "Sequencing learning modules...",
+    "Curating high-fidelity resources...",
+    "Calibrating 4-week timeline...",
+    "Optimizing mastery outcomes...",
+    "Finalizing your path..."
+  ];
+
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setReasoningStep(prev => (prev < reasoningSteps.length - 1 ? prev + 1 : prev));
+      }, 1500);
+      return () => clearInterval(interval);
+    }
+  }, [loading]);
+
   if (loading) return (
-    <div className="flex flex-col items-center justify-center h-96 space-y-4">
-      <Loader2 className="animate-spin text-primary-600" size={48} />
-      <p className="text-slate-500 font-medium">Building your personalized roadmap...</p>
+    <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center space-y-12">
+      <div className="relative w-24 h-24">
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full border-t-4 border-b-4 border-primary-600"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="material-symbols-outlined text-primary-600 text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
+        </div>
+      </div>
+      
+      <div className="max-w-md w-full px-6 space-y-6">
+        <div className="space-y-4">
+          {reasoningSteps.map((step, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ 
+                opacity: idx <= reasoningStep ? 1 : 0.2,
+                x: idx <= reasoningStep ? 0 : -10
+              }}
+              className="flex items-center gap-4"
+            >
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
+                idx < reasoningStep ? 'bg-primary-600 border-primary-600' : 
+                idx === reasoningStep ? 'border-primary-600' : 'border-slate-200'
+              }`}>
+                {idx < reasoningStep ? (
+                  <span className="material-symbols-outlined text-white text-[14px] font-bold">check</span>
+                ) : idx === reasoningStep ? (
+                  <div className="w-1.5 h-1.5 bg-primary-600 rounded-full animate-pulse" />
+                ) : null}
+              </div>
+              <span className={`text-sm font-bold transition-colors ${idx === reasoningStep ? 'text-slate-900' : 'text-slate-400'}`}>
+                {step}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+        
+        <div className="text-center pt-8 border-t border-slate-100">
+          <p className="text-xs font-black text-primary-600 uppercase tracking-widest mb-1">Building Roadmap</p>
+          <p className="text-[10px] text-slate-400 font-medium">This usually takes about 5-10 seconds...</p>
+        </div>
+      </div>
     </div>
   );
 
