@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+openai
+motor
+python-multipart
+pydantic-settings
+pdfminer.six
+python-dotenv
+pymongo
+mongomock
+mongomock-motor
