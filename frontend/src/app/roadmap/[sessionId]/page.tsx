@@ -246,7 +246,7 @@ export default function RoadmapPage() {
                         <div className="space-y-4">
                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Learning Materials</p>
                            <div className="space-y-2">
-                              {topic.recommended_resources?.map((res: any, i: number) => (
+                              {weekData.topics.flatMap((t: any) => t.recommended_resources || []).map((res: any, i: number) => (
                                 <a 
                                   key={i} 
                                   href={res.url} 
