@@ -10,12 +10,26 @@ import { useAuth } from '@/context/AuthContext';
 import Portal from '@/components/Portal';
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [jd, setJd] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
+
+  React.useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="animate-spin text-primary-600 w-10 h-10" />
+      </div>
+    );
+  }
 
   const steps = [
     "Extracting core resume keywords...",
