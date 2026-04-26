@@ -37,6 +37,7 @@ async def register(email: str = Form(...), password: str = Form(...), name: str 
     )
     await db.users.insert_one(user.dict())
     
+    token = create_access_token({"sub": user.id})
     return {"access_token": token, "token_type": "bearer", "user": {"id": user.id, "email": user.email, "name": user.full_name}}
 
 @router.post("/auth/login")
