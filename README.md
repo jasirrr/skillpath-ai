@@ -38,34 +38,64 @@ An intelligent MVP that analyzes resume-job description gaps and conducts conver
   tailwind.config.js
 ```
 
-## ⚙️ Setup Instructions
+## ⚙️ Local Setup Instructions
 
-### Backend
-1. Navigate to `/backend`.
-2. Install dependencies:
+### 1. Prerequisites
+Ensure you have the following installed:
+- **Python 3.10+**
+- **Node.js 18+**
+- **MongoDB** (Running locally or a MongoDB Atlas URI)
+- **OpenRouter API Key** (or OpenAI Key)
+
+---
+
+### 2. Backend Setup
+1. **Navigate to the backend directory:**
+   ```bash
+   cd backend
+   ```
+2. **Create a virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   ```
+3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
-3. Create a `.env` file based on `.env.example`:
-   ```bash
-   cp .env.example .env
-   ```
-4. Add your `OPENAI_API_KEY`.
-5. Run the server:
+4. **Environment Configuration:**
+   - Copy the example environment file:
+     ```bash
+     cp .env.example .env
+     ```
+   - Open `.env` and add your credentials:
+     ```env
+     OPENAI_API_KEY=your_key_here
+     MONGODB_URI=mongodb://localhost:27017
+     DATABASE_NAME=skillpath_ai
+     ```
+5. **Start the server:**
    ```bash
    uvicorn main:app --reload
    ```
+   *The API will be available at `http://localhost:8000`*
 
-### Frontend
-1. Navigate to `/frontend`.
-2. Install dependencies:
+---
+
+### 3. Frontend Setup
+1. **Navigate to the frontend directory:**
+   ```bash
+   cd frontend
+   ```
+2. **Install dependencies:**
    ```bash
    npm install
    ```
-3. Run the development server:
+3. **Start the development server:**
    ```bash
    npm run dev
    ```
+   *The dashboard will be available at `http://localhost:3000`*
 
 ## 🧠 AI Engine Details
 
