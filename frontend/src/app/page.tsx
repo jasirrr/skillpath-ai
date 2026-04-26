@@ -7,6 +7,7 @@ import { uploadResume } from '@/lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useAuth } from '@/context/AuthContext';
+import Portal from '@/components/Portal';
 
 export default function Home() {
   const { user } = useAuth();
@@ -89,62 +90,64 @@ export default function Home() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-16 animate-fade-in py-12 relative">
-      <AnimatePresence>
-        {loading && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center space-y-12"
-          >
-            <div className="relative w-24 h-24">
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 border-4 border-slate-100 border-t-primary-600 rounded-full"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <BrainCircuit className="text-primary-600 w-10 h-10" />
-              </div>
-            </div>
-
-            <div className="space-y-6 w-full max-w-md px-6">
-              {steps.map((step, i) => (
+      <Portal>
+        <AnimatePresence>
+          {loading && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center space-y-12"
+            >
+              <div className="relative w-24 h-24">
                 <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ 
-                    opacity: i <= currentStep ? 1 : 0.3, 
-                    x: 0,
-                    scale: i === currentStep ? 1.05 : 1
-                  }}
-                  className="flex items-center gap-4"
-                >
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                    i < currentStep ? 'bg-primary-600 border-primary-600' : 
-                    i === currentStep ? 'border-primary-600' : 'border-slate-200'
-                  }`}>
-                    {i < currentStep && <CheckCircle className="text-white w-4 h-4" />}
-                    {i === currentStep && <div className="w-2 h-2 bg-primary-600 rounded-full animate-pulse" />}
-                  </div>
-                  <span className={`text-sm font-bold transition-colors ${
-                    i <= currentStep ? 'text-slate-900' : 'text-slate-400'
-                  }`}>
-                    {step}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 border-4 border-slate-100 border-t-primary-600 rounded-full"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <BrainCircuit className="text-primary-600 w-10 h-10" />
+                </div>
+              </div>
 
-            <div className="text-center space-y-2">
-              <p className="text-primary-600 font-black tracking-widest uppercase text-xs animate-pulse">
-                AI Reasoning in Progress
-              </p>
-              <p className="text-slate-400 text-sm italic">This usually takes about 10 seconds...</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <div className="max-w-md w-full px-6 space-y-6">
+                <div className="space-y-4">
+                  {steps.map((step, idx) => (
+                    <motion.div 
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ 
+                        opacity: idx <= currentStep ? 1 : 0.2,
+                        x: idx <= currentStep ? 0 : -10
+                      }}
+                      className="flex items-center gap-4"
+                    >
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
+                        idx < currentStep ? 'bg-primary-600 border-primary-600' : 
+                        idx === currentStep ? 'border-primary-600' : 'border-slate-200'
+                      }`}>
+                        {idx < currentStep ? (
+                          <CheckCircle className="text-white w-4 h-4" />
+                        ) : idx === currentStep ? (
+                          <div className="w-1.5 h-1.5 bg-primary-600 rounded-full animate-pulse" />
+                        ) : null}
+                      </div>
+                      <span className={`text-sm font-bold transition-colors ${idx === currentStep ? 'text-slate-900' : 'text-slate-400'}`}>
+                        {step}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+                
+                <div className="text-center pt-8 border-t border-slate-100">
+                  <p className="text-xs font-black text-primary-600 uppercase tracking-widest mb-1">AI Reasoning in Progress</p>
+                  <p className="text-[10px] text-slate-400 font-medium">This usually takes about 10 seconds...</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Portal>
 
       <div className="text-center space-y-6 max-w-4xl mx-auto">
         <motion.h1 

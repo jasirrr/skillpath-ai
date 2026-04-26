@@ -7,6 +7,7 @@ import api from '@/lib/api';
 import { motion } from 'framer-motion';
 
 import { useAuth } from '@/context/AuthContext';
+import Portal from '@/components/Portal';
 
 export default function RoadmapPage() {
   const { user, loading: authLoading } = useAuth();
@@ -87,61 +88,70 @@ export default function RoadmapPage() {
     }
   }, [loading]);
 
-  if (loading) return (
-    <div className="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center space-y-12">
-      <div className="relative w-24 h-24">
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-t-4 border-b-4 border-primary-600"
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="material-symbols-outlined text-primary-600 text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
-        </div>
-      </div>
-      
-      <div className="max-w-md w-full px-6 space-y-6">
-        <div className="space-y-4">
-          {reasoningSteps.map((step, idx) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ 
-                opacity: idx <= reasoningStep ? 1 : 0.2,
-                x: idx <= reasoningStep ? 0 : -10
-              }}
-              className="flex items-center gap-4"
-            >
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
-                idx < reasoningStep ? 'bg-primary-600 border-primary-600' : 
-                idx === reasoningStep ? 'border-primary-600' : 'border-slate-200'
-              }`}>
-                {idx < reasoningStep ? (
-                  <span className="material-symbols-outlined text-white text-[14px] font-bold">check</span>
-                ) : idx === reasoningStep ? (
-                  <div className="w-1.5 h-1.5 bg-primary-600 rounded-full animate-pulse" />
-                ) : null}
-              </div>
-              <span className={`text-sm font-bold transition-colors ${idx === reasoningStep ? 'text-slate-900' : 'text-slate-400'}`}>
-                {step}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-        
-        <div className="text-center pt-8 border-t border-slate-100">
-          <p className="text-xs font-black text-primary-600 uppercase tracking-widest mb-1">Building Roadmap</p>
-          <p className="text-[10px] text-slate-400 font-medium">This usually takes about 5-10 seconds...</p>
-        </div>
-      </div>
-    </div>
-  );
-
   const progress = calculateProgress();
   const activeWeekIdx = data?.weeks?.findIndex((w: any) => !w.is_completed) ?? 0;
 
   return (
     <div className="max-w-[1200px] mx-auto px-6 py-12 animate-fade-in">
+      <Portal>
+        <AnimatePresence>
+          {loading && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center space-y-12"
+            >
+              <div className="relative w-24 h-24">
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 rounded-full border-t-4 border-b-4 border-primary-600"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-primary-600 text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
+                </div>
+              </div>
+              
+              <div className="max-w-md w-full px-6 space-y-6">
+                <div className="space-y-4">
+                  {reasoningSteps.map((step, idx) => (
+                    <motion.div 
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ 
+                        opacity: idx <= reasoningStep ? 1 : 0.2,
+                        x: idx <= reasoningStep ? 0 : -10
+                      }}
+                      className="flex items-center gap-4"
+                    >
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${
+                        idx < reasoningStep ? 'bg-primary-600 border-primary-600' : 
+                        idx === reasoningStep ? 'border-primary-600' : 'border-slate-200'
+                      }`}>
+                        {idx < reasoningStep ? (
+                          <span className="material-symbols-outlined text-white text-[14px] font-bold">check</span>
+                        ) : idx === reasoningStep ? (
+                          <div className="w-1.5 h-1.5 bg-primary-600 rounded-full animate-pulse" />
+                        ) : null}
+                      </div>
+                      <span className={`text-sm font-bold transition-colors ${idx === reasoningStep ? 'text-slate-900' : 'text-slate-400'}`}>
+                        {step}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+                
+                <div className="text-center pt-8 border-t border-slate-100">
+                  <p className="text-xs font-black text-primary-600 uppercase tracking-widest mb-1">Building Roadmap</p>
+                  <p className="text-[10px] text-slate-400 font-medium">This usually takes about 5-10 seconds...</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Portal>
+
       {/* Header Section with Bento Progress */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-16">
         <div className="md:col-span-8 flex flex-col justify-center space-y-4">
