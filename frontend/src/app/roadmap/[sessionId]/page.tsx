@@ -152,8 +152,10 @@ export default function RoadmapPage() {
         </AnimatePresence>
       </Portal>
 
-      {/* Header Section with Bento Progress */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-16">
+      {data && (
+        <>
+          {/* Header Section with Bento Progress */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-16">
         <div className="md:col-span-8 flex flex-col justify-center space-y-4">
           <button 
             onClick={() => router.push(`/dashboard/${sessionId}`)}
@@ -162,8 +164,8 @@ export default function RoadmapPage() {
             <ArrowLeft size={18} />
             Back to Analysis
           </button>
-          <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
-            {data.target_role}
+          <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-none">
+            {data?.target_role}
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl font-medium leading-relaxed">
             Your personalized learning path built from your assessment. Focus on these modules to bridge the seniority gap.
@@ -390,6 +392,8 @@ export default function RoadmapPage() {
           </button>
         </div>
       </motion.div>
+        </>
+      )}
     </div>
   );
 }
