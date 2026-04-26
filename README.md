@@ -97,19 +97,50 @@ Ensure you have the following installed:
    ```
    *The dashboard will be available at `http://localhost:3000`*
 
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    A[User/Browser] -->|Upload Resume/JD| B[FastAPI Gateway]
+    B -->|Parse PDF| C[Extraction Engine]
+    C -->|Identify Skills| D[Reasoning Engine]
+    D -->|Compare Gaps| E[MongoDB]
+    
+    A -->|Start Assessment| F[Adaptive Engine]
+    F -->|Generate Question| G[LLM Engine]
+    G -->|Evaluate Response| H[Scoring Engine]
+    H -->|Weighted Score| F
+    
+    F -->|Final Score| I[Roadmap Generator]
+    I -->|Curated Resources| J[Personalized Roadmap]
+    J -->|Render| A
+```
+
 ## 🧠 AI Engine Details
 
-### Scoring Engine
-Each answer is evaluated on:
-- **Correctness**: Technical accuracy.
-- **Depth**: Depth of explanation.
-- **Applicability**: Real-world usage.
+### 1. Agentic Reasoning Layer
+Unlike simple keyword matching, SkillPath AI uses a **Reasoning Engine** that:
+- **Literal Verification**: Cross-references identified skills with raw resume text to eliminate false positives.
+- **Knowledge Proximity**: Identifies "Adjacent Skills"—skills not in the JD but highly relevant to the candidate's existing stack—to maximize career impact.
 
-Final skill score is a weighted average of 3 questions (Basic, Intermediate, Scenario).
+### 2. Scientific Scoring Engine
+Each assessment answer is evaluated across three dimensions using a specialized LLM prompt:
+- **Correctness (40%)**: Accuracy of the technical facts provided.
+- **Depth (30%)**: Understanding of underlying principles vs. surface-level knowledge.
+- **Applicability (30%)**: Ability to apply the skill in a real-world project context.
 
-### Adaptive Logic
-- If `score < 4`: Next question difficulty is maintained or simplified.
-- If `score > 7`: Next question difficulty is escalated.
+**Final Score Calculation:**
+We use a weighted average across three escalating difficulty levels:
+- **Basic (1.0x)**: Foundations and terminology.
+- **Intermediate (1.5x)**: Implementation and best practices.
+- **Scenario (2.0x)**: High-level problem-solving and architecture.
+
+### 3. Adaptive Difficulty Logic
+The assessment doesn't follow a static path:
+- **Escalation**: If a candidate scores `> 7/10` on a Basic question, the engine escalates to a Scenario-based question to probe their ceiling.
+- **Calibration**: If a candidate struggles, the engine provides immediate feedback and maintains difficulty to stabilize the assessment.
 
 ## 🏆 Why This Is Unique
-Unlike standard platforms that use static MCQs, this app uses **generative AI to probe actual depth of knowledge**. The adaptive nature ensures candidates are neither bored nor overwhelmed, and the adjacent skill recommendations provide a realistic, high-ROI growth path.
+SkillPath AI moves away from boring MCQs. By using **generative AI to probe actual depth of knowledge** through conversation, we ensure candidates are accurately measured. The result is a roadmap that isn't just a generic list, but a surgically precise plan for career growth.
