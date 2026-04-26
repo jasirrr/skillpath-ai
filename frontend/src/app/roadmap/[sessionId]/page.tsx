@@ -88,7 +88,7 @@ export default function RoadmapPage() {
   }, [loading]);
 
   if (loading) return (
-    <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center space-y-12">
+    <div className="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center space-y-12">
       <div className="relative w-24 h-24">
         <motion.div 
           animate={{ rotate: 360 }}
